@@ -114,8 +114,8 @@ ColinearSort(SlopeCalcPoint* points, int length)
 void
 MarkColinears(Point* points, int length)
 {
-    for (int i = 0; i < length - 1; i++)
-    //for (int i = 0; i < 1; i++)
+    for (int i = 0; i < length - 1; i++) //Collinears relative to all points
+    //for (int i = 0; i < 1; i++) //Collinears relative to the first point only
     {
         SlopeCalcPoint* pointsCalc = (SlopeCalcPoint*)calloc(sizeof(SlopeCalcPoint) * length - 1, sizeof(int));
 
@@ -141,19 +141,20 @@ MarkColinears(Point* points, int length)
             {
                 double slope = pointsCalc[i].slope;  // Current slope
                 colinearPoints[0] = points[i];       // Add point we're computing
-                numColinears++;
+				numColinears++;
 
                 // Search for more colinears
-                while (j < length - 1 && slope != pointsCalc[j + 1].slope)
+                while (j < length - 1 && slope == pointsCalc[j + 1].slope)
                 {
                     numColinears++;
                     // Set end
-                    colinearPoints[1].x = pointsCalc[j + 1].x;
-                    colinearPoints[1].y = pointsCalc[j + 1].y;
+                    colinearPoints[1].x = pointsCalc[j+1].x;
+                    colinearPoints[1].y = pointsCalc[j+1].y;
                     j++;
                 }
 
                 if (numColinears >= MIN_NUM_COLINEARS) DrawColinear(colinearPoints);
+				numColinears = 0;
             }
         }
 
